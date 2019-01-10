@@ -7,7 +7,7 @@
 
         T this[int index] { get; set; }
 
-        void Add(T elem, int index);
+        void Insert(int index, T elem);
 
         T Remove(int index);
     }

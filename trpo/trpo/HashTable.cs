@@ -18,7 +18,7 @@
             set => throw new System.NotImplementedException();
         }
 
-        public void Add(T elem, int index)
+        public void Insert(int index, T elem)
         {
             throw new System.NotImplementedException();
         }
