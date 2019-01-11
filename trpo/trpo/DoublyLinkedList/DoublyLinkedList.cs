@@ -20,16 +20,13 @@ namespace trpo.DoublyLinkedList
         {
             operations[lastOperation].InverseTransform();
 
-            lastOperation = lastOperation - 1;
+            lastOperation--;
         }
 
         public void Redo()
         {
-            var operationToInverse = lastOperation - 1;
-            if (operationToInverse >= 0 && operationToInverse < operations.Count)
-            {
-                operations[operationToInverse].InverseTransform();
-            }
+            lastOperation++;
+            operations[lastOperation].Transform();
         }
 
         public T this[int index]

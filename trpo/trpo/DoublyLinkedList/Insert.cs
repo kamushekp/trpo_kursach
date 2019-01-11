@@ -28,6 +28,11 @@
 
             TargetNode.Left = predecessor;
             TargetNode.Right = follower;
+
+            if (TargetNode.Left == null)
+            {
+                this.list.Head = TargetNode;
+            }
         }
 
         public void InverseTransform()

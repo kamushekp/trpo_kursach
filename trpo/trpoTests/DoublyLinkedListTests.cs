@@ -25,6 +25,9 @@ namespace trpoTests
 
             CheckElementExisting(list, number);
             CheckRaising_AOORE_Exception(list, 1);
+
+            list.Redo();
+            CheckElementExisting(list, number * 2, number);
         }
 
 
@@ -45,6 +48,10 @@ namespace trpoTests
 
             CheckElementExisting(list, twice, number);
             CheckRaising_AOORE_Exception(list, 2);
+
+
+            list.Redo();
+            CheckElementExisting(list, twice, triple, number);
         }
 
         private void CheckElementExisting(DoublyLinkedList<int> list, params int[] elems)
