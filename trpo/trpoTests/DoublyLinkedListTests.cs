@@ -14,17 +14,17 @@ namespace trpoTests
         public void OneElementInsertionUndo()
         {
             var list = new DoublyLinkedList<int>(number);
-            list[0].Should().Be(number);
+
+            CheckElementExisting(list, number);
 
             list.Insert(0, number * 2);
-            list[0].Should().Be(number * 2);
-            list[1].Should().Be(number);
+
+            CheckElementExisting(list, number * 2, number);
 
             list.Undo();
 
-            list[0].Should().Be(number);
-            Action act = () => { var _ = list[1]; };
-            act.Should().Throw<ArgumentOutOfRangeException>();
+            CheckElementExisting(list, number);
+            CheckRaising_AOORE_Exception(list, 1);
         }
 
 
@@ -32,23 +32,32 @@ namespace trpoTests
         public void SomeElementsInsertionUndo()
         {
             var list = new DoublyLinkedList<int>(number);
-            list[0].Should().Be(number);
+            CheckElementExisting(list, number);
 
             var twice = number * 2;
             var triple = number * 3;
 
             list.Insert(0, twice);
             list.Insert(1, triple);
-
-            list[0].Should().Be(twice);
-            list[1].Should().Be(triple);
-            list[2].Should().Be(number);
+            CheckElementExisting(list, twice, triple, number);
 
             list.Undo();
 
-            list[0].Should().Be(twice);
-            list[1].Should().Be(number);
-            Action act = () => { var _ = list[2]; };
+            CheckElementExisting(list, twice, number);
+            CheckRaising_AOORE_Exception(list, 2);
+        }
+
+        private void CheckElementExisting(DoublyLinkedList<int> list, params int[] elems)
+        {
+            for (var index = 0; index < elems.Length; index++)
+            {
+                list[index].Should().Be(elems[index]);
+            }
+        }
+
+        private void CheckRaising_AOORE_Exception(DoublyLinkedList<int> list, int incorrectIndex)
+        {
+            Action act = () => { var _ = list[incorrectIndex]; };
             act.Should().Throw<ArgumentOutOfRangeException>();
         }
     }
