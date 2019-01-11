@@ -1,9 +1,9 @@
 ﻿namespace trpo.DoublyLinkedList
 {
-    internal class Insert<T> :IOperation<T>
+    internal class Insert<T> : IOperation<T>
     {
-        private int index;
-        private DoublyLinkedList<T> list;
+        private readonly int index;
+        private readonly DoublyLinkedList<T> list;
 
         public Insert(Node<T> targetNode, int index, DoublyLinkedList<T> list)
         {
@@ -13,9 +13,10 @@
         }
 
         public Node<T> TargetNode { get; }
+
         public void Transform()
-        { 
-            var follower = list.Head.GetNodeAtIndex(this.index);
+        {
+            var follower = list.Head.GetNodeAtIndex(index);
 
             var predecessor = follower.Left;
 
@@ -31,7 +32,7 @@
 
             if (TargetNode.Left == null)
             {
-                this.list.Head = TargetNode;
+                list.Head = TargetNode;
             }
         }
 
@@ -44,6 +45,7 @@
             {
                 predecessor.Right = follower;
             }
+
             follower.Left = predecessor;
             if (follower.Left == null)
             {

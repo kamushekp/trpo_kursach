@@ -46,6 +46,7 @@
     <Compile Include="DoublyLinkedList\Node.cs" />
     <Compile Include="DoublyLinkedList\Insert.cs" />
     <Compile Include="DoublyLinkedList\NodeExtension.cs" />
+    <Compile Include="DoublyLinkedList\Remove.cs" />
     <Compile Include="HashTable.cs" />
     <Compile Include="IPersistent.cs" />
     <Compile Include="OperationInfo.cs" />

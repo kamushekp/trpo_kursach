@@ -13,7 +13,6 @@ namespace trpo.DoublyLinkedList
             {
                 yield return node;
                 node = node.Right;
-
             } while (node != null);
         }
 

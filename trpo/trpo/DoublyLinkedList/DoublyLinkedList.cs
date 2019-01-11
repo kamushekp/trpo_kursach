@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace trpo.DoublyLinkedList
 {
     public class DoublyLinkedList<T> : IPersistent<T>
     {
-        internal Node<T> Head { get; set; }
-
         private readonly List<IOperation<T>> operations = new List<IOperation<T>>();
         private int lastOperation = -1;
 
@@ -15,6 +12,8 @@ namespace trpo.DoublyLinkedList
         {
             Head = new Node<T>(value);
         }
+
+        internal Node<T> Head { get; set; }
 
         public void Undo()
         {
@@ -31,8 +30,8 @@ namespace trpo.DoublyLinkedList
 
         public T this[int index]
         {
-            get { return this.Head.GetNodeAtIndex(index).Value;}
-            set { }
+            get => Head.GetNodeAtIndex(index).Value;
+            set => throw new NotImplementedException();
         }
 
         public void Insert(int index, T elem)
@@ -43,7 +42,7 @@ namespace trpo.DoublyLinkedList
 
             if (index == 0)
             {
-                this.Head = node;
+                Head = node;
             }
 
             operations.Add(operation);
@@ -52,8 +51,7 @@ namespace trpo.DoublyLinkedList
 
         public T Remove(int index)
         {
-            throw  new NotImplementedException();
+            throw new NotImplementedException();
         }
-
     }
 }

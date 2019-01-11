@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace trpo.DoublyLinkedList
+﻿namespace trpo.DoublyLinkedList
 {
     internal class Node<T>
     {
