@@ -4,6 +4,6 @@
     {
         Node<T> TargetNode { get; }
         void Transform();
-        void InverseTransform(ref Node<T> head);
+        void InverseTransform();
     }
 }

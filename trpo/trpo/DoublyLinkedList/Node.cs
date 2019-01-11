@@ -16,7 +16,7 @@ namespace trpo.DoublyLinkedList
 
         public override string ToString()
         {
-            return $"Value = {Value}";
+            return $"Value = {Value}, Right = {{{Right}}}";
         }
     }
 }

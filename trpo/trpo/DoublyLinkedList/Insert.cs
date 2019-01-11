@@ -3,18 +3,19 @@
     internal class Insert<T> :IOperation<T>
     {
         private int index;
-        private Node<T> head;
-        public Insert(Node<T> targetNode, Node<T> head, int index)
+        private DoublyLinkedList<T> list;
+
+        public Insert(Node<T> targetNode, int index, DoublyLinkedList<T> list)
         {
             TargetNode = targetNode;
             this.index = index;
-            this.head = head;
+            this.list = list;
         }
 
         public Node<T> TargetNode { get; }
         public void Transform()
         { 
-            var follower = head.GetNodeAtIndex(this.index);
+            var follower = list.Head.GetNodeAtIndex(this.index);
 
             var predecessor = follower.Left;
 
@@ -29,7 +30,7 @@
             TargetNode.Right = follower;
         }
 
-        public void InverseTransform(ref Node<T> head)
+        public void InverseTransform()
         {
             var predecessor = TargetNode.Left;
             var follower = TargetNode.Right;
@@ -41,7 +42,7 @@
             follower.Left = predecessor;
             if (follower.Left == null)
             {
-                head = follower;
+                list.Head = follower;
             }
         }
     }

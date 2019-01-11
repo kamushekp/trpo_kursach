@@ -6,46 +6,51 @@ namespace trpo.DoublyLinkedList
 {
     public class DoublyLinkedList<T> : IPersistent<T>
     {
-        private Node<T> head;
+        internal Node<T> Head { get; set; }
 
-        private List<IOperation<T>> operations = new List<IOperation<T>>();
-        private int currentOperation = 0;
+        private readonly List<IOperation<T>> operations = new List<IOperation<T>>();
+        private int lastOperation = -1;
 
         public DoublyLinkedList(T value)
         {
-            head = new Node<T>(value);
+            Head = new Node<T>(value);
         }
 
         public void Undo()
         {
-            for(var i = operations.Count - 1; i >= 0; i-- )
-            {
-                operations[i].InverseTransform(ref head);
-            }
+            operations[lastOperation].InverseTransform();
+
+            lastOperation = lastOperation - 1;
         }
 
         public void Redo()
         {
+            var operationToInverse = lastOperation - 1;
+            if (operationToInverse >= 0 && operationToInverse < operations.Count)
+            {
+                operations[operationToInverse].InverseTransform();
+            }
         }
 
         public T this[int index]
         {
-            get { return head.GetNodeAtIndex(index).Value;}
+            get { return this.Head.GetNodeAtIndex(index).Value;}
             set { }
         }
 
         public void Insert(int index, T elem)
         {
             var node = new Node<T>(elem);
-            var operation = new Insert<T>(node, head, index);
+            var operation = new Insert<T>(node, index, this);
             operation.Transform();
 
             if (index == 0)
             {
-                head = node;
+                this.Head = node;
             }
 
             operations.Add(operation);
+            lastOperation++;
         }
 
         public T Remove(int index)

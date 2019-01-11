@@ -8,14 +8,13 @@ namespace trpo.DoublyLinkedList
     {
         public static IEnumerable<Node<T>> EnumerateNodes<T>(this Node<T> head)
         {
-            for (var node = head; ; node = head.Right)
+            var node = head;
+            do
             {
                 yield return node;
-                if (head.Right == null)
-                {
-                    yield break;
-                }
-            }
+                node = node.Right;
+
+            } while (node != null);
         }
 
         public static Node<T> GetNodeAtIndex<T>(this Node<T> head, int index)
