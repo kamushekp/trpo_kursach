@@ -54,6 +54,26 @@ namespace trpoTests
             CheckElementExisting(list, twice, triple, number);
         }
 
+        [Test]
+        public void RemovingUndo()
+        {
+            var list = new DoublyLinkedList<int>(number);
+
+            CheckElementExisting(list, number);
+
+            var twice = number * 2;
+            list.Insert(0, twice);
+
+            list.Remove(0).Should().Be(twice);
+            CheckRaising_AOORE_Exception(list, 1);
+            list.Undo();
+
+            CheckElementExisting(list, twice, number);
+
+            list.Redo();
+            CheckRaising_AOORE_Exception(list, 1);
+        }
+
         private void CheckElementExisting(DoublyLinkedList<int> list, params int[] elems)
         {
             for (var index = 0; index < elems.Length; index++)

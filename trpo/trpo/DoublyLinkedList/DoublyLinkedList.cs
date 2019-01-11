@@ -40,18 +40,20 @@ namespace trpo.DoublyLinkedList
             var operation = new Insert<T>(node, index, this);
             operation.Transform();
 
-            if (index == 0)
-            {
-                Head = node;
-            }
-
             operations.Add(operation);
             lastOperation++;
         }
 
         public T Remove(int index)
         {
-            throw new NotImplementedException();
+            var node = Head.GetNodeAtIndex(index);
+            var operation = new Remove<T>(node, index, this);
+            operation.Transform();
+
+            operations.Add(operation);
+            lastOperation++;
+
+            return node.Value;
         }
     }
 }

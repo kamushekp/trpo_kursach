@@ -13,7 +13,7 @@
 
         public override string ToString()
         {
-            return $"Value = {Value}, Right = {{{Right}}}";
+            return $"Value = {Value}";
         }
     }
 }
