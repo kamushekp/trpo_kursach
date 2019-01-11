@@ -5,22 +5,18 @@ using trpo.ResizableArray;
 
 namespace trpo.HashTable
 {
-    public class HashTable<T1, T2> : IPersistentHash<T1, T2>
-        where T1 : IComparable
-        where T2 : IComparable
+    public class HashTable<T1, T2> : IPersistentHash<T1, T2> where T1 : IComparable where T2 : IComparable
     {
-        private ResizableArray.LinkedList<IDictionary<T1, T2>> list;
-        private int currentVersionIndex = 0;
+        private int currentVersionIndex;
         public Dictionary<T1, T2> hashTable;
+        private readonly ResizableArray.LinkedList<IDictionary<T1, T2>> list;
 
         public HashTable(IDictionary<T1, T2> ienumerable)
         {
             list = new ResizableArray.LinkedList<IDictionary<T1, T2>>(currentVersionIndex, ienumerable);
             hashTable = new Dictionary<T1, T2>();
             foreach (var element in ienumerable)
-            {
                 hashTable.Add(element.Key, element.Value);
-            }
         }
 
         public void Undo()
@@ -42,23 +38,6 @@ namespace trpo.HashTable
             get => hashTable[index];
             set => hashTable[index] = value;
         }
-        
-        public bool Contains(T1 key, T2 value)
-        {
-            foreach (var element in hashTable)
-            {
-                if (element.Key.CompareTo(key) == 0)
-                {
-                    if (element.Value.CompareTo(value) == 0)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-            }
-
-            return false;
-        }
 
         public void Add(T1 key, T2 value)
         {
@@ -72,6 +51,22 @@ namespace trpo.HashTable
             hashTable.Remove(key);
             list.Insert(new ListItem<IDictionary<T1, T2>>(++currentVersionIndex, hashTable));
             return result;
+        }
+
+        public bool Contains(T1 key, T2 value)
+        {
+            foreach (var element in hashTable)
+                if (element.Key.CompareTo(key) == 0)
+                {
+                    if (element.Value.CompareTo(value) == 0)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+            return false;
         }
     }
 }

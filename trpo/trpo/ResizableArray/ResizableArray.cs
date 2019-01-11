@@ -5,10 +5,10 @@ namespace trpo.ResizableArray
 {
     public class ResizableArray<T> : IPersistent<T>
     {
-        private LinkedList<IEnumerable<T>> list;
-        private int currentVersionIndex = 0;
+        private int currentVersionIndex;
+        private readonly LinkedList<IEnumerable<T>> list;
         public List<T> resizableArray;
-        
+
         public ResizableArray() : this(new T[0])
         {
         }
@@ -18,9 +18,7 @@ namespace trpo.ResizableArray
             list = new LinkedList<IEnumerable<T>>(currentVersionIndex, ienumerable);
             resizableArray = new List<T>();
             foreach (var element in ienumerable)
-            {
                 resizableArray.Add(element);
-            }
         }
 
         public void Undo()

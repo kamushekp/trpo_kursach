@@ -4,29 +4,30 @@ namespace trpo.ResizableArray
 {
     public class ListItem<T>
     {
-        public int currentVersion { get; set; }
-        public T Key { get; set; }
-        public ListItem<T> Next { get; set; }
-        public ListItem<T> Prev { get; set; }
-
         public ListItem(int version, T key)
         {
             Key = key;
             currentVersion = version;
         }
+
+        public int currentVersion { get; set; }
+        public T Key { get; set; }
+        public ListItem<T> Next { get; set; }
+        public ListItem<T> Prev { get; set; }
     }
 
     public class LinkedList<T>
     {
-        public ListItem<T> head { get; private set; }
         private int currentVersionIndex;
-        private List<int> AvailableVersions { get; }
 
         public LinkedList(int version, T key)
         {
             AvailableVersions = new List<int> {version};
             head = new ListItem<T>(version, key);
         }
+
+        public ListItem<T> head { get; private set; }
+        private List<int> AvailableVersions { get; }
 
         public void Insert(ListItem<T> item)
         {
@@ -57,6 +58,7 @@ namespace trpo.ResizableArray
             {
                 item.Next.Prev = item.Prev;
             }
+
             currentVersionIndex--;
         }
 
@@ -74,16 +76,13 @@ namespace trpo.ResizableArray
             {
                 currentVersionIndex--;
             }
-            
         }
 
         public ListItem<T> Search(int index)
         {
             var item = head;
             while (item != null && item.currentVersion != index)
-            {
                 item = item.Next;
-            }
 
             return item;
         }
