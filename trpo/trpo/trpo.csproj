@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoublyLinkedList\DoublyLinkedList.cs" />
+    <Compile Include="DoublyLinkedList\DoublyLinkedListExtension.cs" />
     <Compile Include="DoublyLinkedList\IOperation.cs" />
     <Compile Include="DoublyLinkedList\Node.cs" />
     <Compile Include="DoublyLinkedList\Insert.cs" />
