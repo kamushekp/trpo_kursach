@@ -6,103 +6,52 @@ namespace trpo.DoublyLinkedList
 {
     public class DoublyLinkedList<T> : IPersistent<T>
     {
-        private readonly Guid currentVersion;
-        private readonly Node<T> head;
+        private Node<T> head;
 
-        public DoublyLinkedList() : this(new T[0])
+        private List<IOperation<T>> operations = new List<IOperation<T>>();
+        private int currentOperation = 0;
+
+        public DoublyLinkedList(T value)
         {
-        }
-
-        public DoublyLinkedList(IEnumerable<T> ienumerable)
-        {
-            currentVersion = Guid.NewGuid();
-            head = new Node<T>(currentVersion);
-            head.Value = ienumerable.FirstOrDefault();
-
-            var current = head;
-
-            foreach (var value in ienumerable.Skip(1))
-            {
-                var newNode = new Node<T>(currentVersion);
-                newNode.Value = value;
-                current.Right = newNode;
-                current = newNode;
-            }
+            head = new Node<T>(value);
         }
 
         public void Undo()
         {
-            ApplyForNodes(node => node.Downgrade());
+            for(var i = operations.Count - 1; i >= 0; i-- )
+            {
+                operations[i].InverseTransform(ref head);
+            }
         }
 
         public void Redo()
         {
-            ApplyForNodes(node => node.Upgrade());
         }
 
         public T this[int index]
         {
-            get => FindNodeByIndex(index).Value;
-            set => FindNodeByIndex(index).Value = value;
+            get { return head.GetNodeAtIndex(index).Value;}
+            set { }
         }
 
         public void Insert(int index, T elem)
         {
-            var willBeBehind = FindNodeByIndex(index);
-            var willBeAhead = willBeBehind.Right;
+            var node = new Node<T>(elem);
+            var operation = new Insert<T>(node, head, index);
+            operation.Transform();
 
-            var newVersion = new Guid();
-            var newNode = new Node<T>(newVersion, elem, willBeBehind, willBeAhead);
+            if (index == 0)
+            {
+                head = node;
+            }
 
-            willBeBehind.AddNewVersion(newVersion, willBeBehind.Value, willBeBehind.Left, newNode);
-            willBeAhead?.AddNewVersion(newVersion, willBeAhead.Value, newNode, willBeAhead.Right);
+            operations.Add(operation);
         }
 
         public T Remove(int index)
         {
-            var toRemove = FindNodeByIndex(index);
-
-            var newVersion = new Guid();
-            var nodeFromLeft = toRemove.Left;
-            var nodeFromRight = toRemove.Right;
-
-            nodeFromLeft.AddNewVersion(newVersion, nodeFromLeft.Value, nodeFromLeft.Left, nodeFromRight);
-            nodeFromRight.AddNewVersion(newVersion, nodeFromRight.Value, nodeFromLeft, nodeFromRight.Right);
-
-            return toRemove.Value;
+            throw  new NotImplementedException();
         }
 
-        private void ApplyForNodes(Action<Node<T>> action)
-        {
-            var current = head;
-            do
-            {
-                action(current);
-                current = current.Right;
-
-            } while (current != null);
-
-        }
-
-        private Node<T> FindNodeByIndex(int index)
-        {
-            if (index < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(index));
-            }
-
-            var current = head;
-
-            for (var currentIndex = 0; currentIndex < index; currentIndex++)
-            {
-                current = current.Right;
-                if (current == null)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
-            }
-
-            return current;
-        }
     }
 }

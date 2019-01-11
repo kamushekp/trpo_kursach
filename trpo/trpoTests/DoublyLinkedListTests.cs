@@ -13,12 +13,12 @@ namespace trpoTests
         [Test]
         public void OneElement()
         {
-            var list = new DoublyLinkedList<int>(new[] {number});
+            var list = new DoublyLinkedList<int>(number);
             list[0].Should().Be(number);
 
             list.Insert(0, number * 2);
-            list[0].Should().Be(number);
-            list[1].Should().Be(number * 2);
+            list[0].Should().Be(number * 2);
+            list[1].Should().Be(number);
 
             list.Undo();
 
